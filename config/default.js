@@ -6,13 +6,17 @@ module.exports = {
   },
 
   ehr_to_fhir: {
-    URL: 'http://localhost:3004/',
+    URL: 'http://localhost:3004',
+  },
+
+  message_passer: {
+    URL: 'http://localhost:3005'
   },
 
   message_queue: {
-    ACTIVE: true,
+    ACTIVE: false,
     HOST: "localhost",
-    NAME: "ehr-integration-ehr-fhir-mapper"
+    NAME: "ehr-integration_ehr-fhir-mapper"
   }
 
 };

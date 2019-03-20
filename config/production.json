@@ -4,13 +4,17 @@
     "username": "user",
     "password": "password",
     "database": "database",
-    "host": "mysql",
+    "host": "ehr-integration_mysql_1",
     "dialect": "mysql"
+  },
+
+  "message_passer": {
+    "URL": "http://message-passer_webapp_1:3005"
   },
 
   "message_queue": {
     "ACTIVE": true,
-    "HOST": "rabbit"
+    "HOST": "ehr-fhir-mapper_rabbit_1"
   }
 
 }
