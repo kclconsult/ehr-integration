@@ -4,21 +4,15 @@ const router = express.Router();
 const async = require('async');
 const uuidv1 = require('uuid/v1');
 
+const models = require('../models');
 const config = require('config');
 
 module.exports = function(messageObject) {
 
-	/**
-	 * @api {get} /simulate/incomingEHR Simulate an incoming patient EHR (output pre-formatted as FHIR).
-	 * @apiName SimulateEHR
-	 * @apiGroup Simulate
-	 *
-	 */
-	router.get('/incomingEHR', function(req, res, next) {
+	function sendEHRData(patientID, callback, patientSubscription=false) {
 
 		const organizationID = uuidv1();
 		const practitionerID = uuidv1();
-	  const	patientID = uuidv1();
 		const conditionAID = uuidv1();
 		const conditionBID = uuidv1();
 		const medicationAID = uuidv1();
@@ -26,7 +20,7 @@ module.exports = function(messageObject) {
 		const dispenseAID = uuidv1();
 		const dispenseBID = uuidv1();
 
-	  fhirResources = [["Organization", {"id": organizationID}],
+	  fhirResources =  [["Organization", {"id": organizationID}],
 	                   ["Practitioner",	{"id": practitionerID, "familyName": "Careful", "givenName": "Adam"}],
 	                   ["Patient", {"id": patientID, "title": "MR", "familyName": "Chalmers", "givenName": "Peter", "birthDate": "1952-02-17", "organizationReference": organizationID, "ethnicityCode": "2106-3", "ethnicityDiplay": "White"}],
 	                   ["Condition", {"id": conditionAID, "codeSystem": "http://snomed.info/sct", "code": "396275006", "display": "Osteoarthritis", "subjectReference": patientID, "practitionerReference": practitionerID}],
@@ -35,7 +29,9 @@ module.exports = function(messageObject) {
 	                   ["Medication", {"id": medicationBID, "codeSystem": "http://snomed.info/sct", "code": "91667005", "display": "Thiazide"}],
 	                   ["MedicationDispense", {"id": dispenseAID, "medicationReference": medicationAID, "subjectReference": patientID, "practitionerReference": practitionerID, "organizationReference": organizationID}],
 	                   ["MedicationDispense", {"id": dispenseBID, "medicationReference": medicationBID, "subjectReference": patientID, "practitionerReference": practitionerID, "organizationReference": organizationID}],
-	                   ["Subscription", {"id": "hapi-message-passer-subscription", "URL": config.get('message_passer.URL')}]];
+	                   ["Subscription", {"id": "hapi-message-passer-observation-subscription", "criteria": "Observation?_format=json", "URL": config.get('message_passer.URL')}]];
+
+		if ( patientSubscription ) fhirResources.unshift(["Subscription", {"id": "hapi-message-passer-patient-subscription", "criteria": "Patient?_format=json", "URL": config.get('message_passer.URL')}]);
 
 		async.eachSeries(fhirResources, function (value, next) {
 
@@ -44,9 +40,52 @@ module.exports = function(messageObject) {
 
 		}, function(err) {
 
-			res.sendStatus(200);
+			callback(200);
 
 		});
+
+	}
+	/**
+	 * @api {get} /simulate/incomingEHR Simulate an incoming patient EHR (output pre-formatted as FHIR).
+	 * @apiName SimulateEHR
+	 * @apiGroup Simulate
+	 *
+	 */
+	router.get('/incomingEHR', function(req, res, next) {
+
+		sendEHRData(uuidv1(), function(status) {
+
+			res.sendStatus(status);
+
+		});
+
+	});
+
+	router.get('/incomingEHR/:nhsNumber', function(req, res, next) {
+
+		const patientID = uuidv1();
+
+		models.users.update({
+
+			nhsNumber: null,
+			patientID: patientID
+
+		},
+		{
+			where: {
+
+			 nhsNumber: req.params.nhsNumber
+
+			}
+		}).then(function(update) {
+
+			sendEHRData(patientID, function(status) {
+
+				res.sendStatus(status);
+
+			}, true);
+
+		})
 
 	});
 

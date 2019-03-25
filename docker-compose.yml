@@ -7,6 +7,8 @@ services:
       context: .
     depends_on:
       - mysql
+    environment:
+      - MESSAGE_PASSER_ADDRESS=danvers
 
   mysql:
     image: mysql:5
@@ -20,7 +22,7 @@ services:
 
   migration:
     image: ehr-integration_webapp:latest
-    command: ["./wait-for-it/wait-for-it.sh", "mysql:3306", "--", "npm", "run", "migrate"]
+    command: ["./wait-for-it.sh", "--timeout=0", "ehr-integration_mysql_1:3306", "--", "npm", "run", "migrate"]
     links:
       - mysql
     depends_on:
@@ -40,4 +42,4 @@ volumes:
 networks:
   default:
     external:
-      name: network
+      name: ehr_network

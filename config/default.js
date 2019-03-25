@@ -6,11 +6,11 @@ module.exports = {
   },
 
   ehr_to_fhir: {
-    URL: 'http://localhost:3004',
+    URL: 'https://localhost', // TODO: Setup proxy endpoint.
   },
 
   message_passer: {
-    URL: 'http://localhost:3005'
+    URL: 'https://localhost'
   },
 
   message_queue: {

@@ -24,10 +24,10 @@ const router = express.Router();
 
 // Session
 app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    name: "name",
-    secret: "secret"
+  resave: true,
+  saveUninitialized: true,
+  name: "name",
+  secret: "secret"
 }));
 
 // Views
@@ -44,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 const simulate = require('./routes/simulate');
+const register = require('./routes/register');
 
 // Route setup involving async
 function init() {
@@ -69,19 +70,21 @@ function init() {
 
 }
 
+router.use('/register', register);
+
 router.use('/', function(req, res, next) {
 
   const credentials = auth(req)
 
   if ( !credentials || credentials.name !== config.get('credentials.USERNAME') || credentials.pass !== config.get('credentials.PASSWORD') ) {
 
-      res.status(401);
-      res.header('WWW-Authenticate', 'Basic realm="forbidden"');
-      res.send('Access denied');
+    res.status(401);
+    res.header('WWW-Authenticate', 'Basic realm="forbidden"');
+    res.send('Access denied');
 
   } else {
 
-      next();
+    next();
 
   }
 
