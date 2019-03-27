@@ -8,4 +8,6 @@ COPY ./certs/grey.key /etc/nginx/ssl/grey.key
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY locations /etc/nginx/locations
 
+COPY bin/wait-for-it.sh wait-for-it.sh
+
 CMD ["nginx", "-g", "daemon off;"]

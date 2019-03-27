@@ -22,7 +22,7 @@ module.exports = function(messageObject) {
 
 	  fhirResources =  [["Organization", {"id": organizationID}],
 	                   ["Practitioner",	{"id": practitionerID, "familyName": "Careful", "givenName": "Adam"}],
-	                   ["Patient", {"id": patientID, "title": "MR", "familyName": "Chalmers", "givenName": "Peter", "birthDate": "1952-02-17", "organizationReference": organizationID, "ethnicityCode": "2106-3", "ethnicityDiplay": "White"}],
+	                   ["Patient", {"id": patientID, "title": "MR", "familyName": "Chalmers", "givenName": "Peter", "birthDate": "1952-02-17", "organizationReference": organizationID, "ethnicityCode": "2106-3", "ethnicityDisplay": "White"}],
 	                   ["Condition", {"id": conditionAID, "codeSystem": "http://snomed.info/sct", "code": "396275006", "display": "Osteoarthritis", "subjectReference": patientID, "practitionerReference": practitionerID}],
 	                   ["Condition", {"id": conditionBID, "codeSystem": "http://snomed.info/sct", "code": "38341003", "display": "Hypertension", "subjectReference": patientID, "practitionerReference": practitionerID}],
 	                   ["Medication", {"id": medicationAID, "codeSystem": "http://snomed.info/sct", "code": "16403005", "display": "NSAID"}],
