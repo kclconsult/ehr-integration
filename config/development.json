@@ -1,12 +1,20 @@
 {
-  
+
   "dbConfig": {
 	  "dialect": "sqlite",
 	  "storage": "db.test.sqlite"
   },
 
+  "ehr_to_fhir": {
+    "URL": "http://localhost:3004"
+  },
+
+  "message_passer": {
+    "URL": "http://localhost:3005"
+  },
+
   "message_queue": {
-    "HOST": "localhost"
+    "ACTIVE": false
   }
 
 }

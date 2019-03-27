@@ -36,7 +36,7 @@ module.exports = function(messageObject) {
 		async.eachSeries(fhirResources, function (value, next) {
 
 			value[1].resource = value[0];
-			messageObject.send(config.get('ehr_to_fhir.URL') + "create/" + value[0], value[1]).then(() => next());
+			messageObject.send(config.get('ehr_to_fhir.URL') + "/create/" + value[0], value[1]).then(() => next());
 
 		}, function(err) {
 
