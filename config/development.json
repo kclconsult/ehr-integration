@@ -5,6 +5,14 @@
 	  "storage": "db.test.sqlite"
   },
 
+  "nokia": {
+    "URL": "http://localhost:3000"
+  },
+
+  "garmin": {
+    "URL": "http://localhost:3001"
+  },
+
   "ehr_to_fhir": {
     "URL": "http://localhost:3004"
   },

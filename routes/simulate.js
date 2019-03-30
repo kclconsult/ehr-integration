@@ -40,7 +40,7 @@ module.exports = function(messageObject) {
 
 		}, function(err) {
 
-			callback(200);
+			callback("<a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\">Simulate incoming BP</a>");
 
 		});
 
@@ -53,9 +53,9 @@ module.exports = function(messageObject) {
 	 */
 	router.get('/incomingEHR', function(req, res, next) {
 
-		sendEHRData(uuidv1(), function(status) {
+		sendEHRData(uuidv1(), function(links) {
 
-			res.sendStatus(status);
+			res.send(links);
 
 		});
 
@@ -79,9 +79,9 @@ module.exports = function(messageObject) {
 			}
 		}).then(function(update) {
 
-			sendEHRData(patientID, function(status) {
+			sendEHRData(patientID, function(links) {
 
-				res.sendStatus(status);
+				res.send(links);
 
 			}, true);
 

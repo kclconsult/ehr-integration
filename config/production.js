@@ -8,6 +8,15 @@ module.exports = {
     dialect: "mysql"
   },
 
+  // Addresses for simulation sensor links.
+  nokia: {
+    URL: "https://grey"
+  },
+
+  garmin: {
+    URL: "https://grey"
+  },
+
   // TODO: Add proxy entry so port does not have to be specified here.
   ehr_to_fhir: {
     URL: "http://ehr-fhir-mapper_webapp-queue_1:3004"
