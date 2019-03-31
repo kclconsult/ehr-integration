@@ -10,11 +10,11 @@ module.exports = {
 
   // Addresses for simulation sensor links.
   nokia: {
-    URL: "https://grey"
+    URL: "https://stacy"
   },
 
   garmin: {
-    URL: "https://grey"
+    URL: "https://stacy"
   },
 
   // TODO: Add proxy entry so port does not have to be specified here.

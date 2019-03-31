@@ -57,7 +57,7 @@ module.exports = function(messageObject) {
 
 			res.send(links);
 
-		});
+		}, true);
 
 	});
 
@@ -72,11 +72,11 @@ module.exports = function(messageObject) {
 
 		},
 		{
+
 			where: {
-
 			 nhsNumber: req.params.nhsNumber
-
 			}
+
 		}).then(function(update) {
 
 			sendEHRData(patientID, function(links) {

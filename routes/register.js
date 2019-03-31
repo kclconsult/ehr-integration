@@ -41,21 +41,21 @@ router.get('/:nhsNumber', function(req, res, next) {
 router.get('/token/:token', function(req, res, next) {
 
   models.users.findOne({
+
     where: {
-
       token: req.params.token
-
     }
+
   }).then(function(user) {
 
     if ( user && user.nhsNumber == null && user.patientID ) {
 
       models.users.destroy({
+
         where: {
-
           token: req.params.token
-
         }
+
       }).then(function(destory) {
 
         res.send(user.patientID);
