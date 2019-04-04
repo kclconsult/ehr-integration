@@ -23,5 +23,5 @@ COPY ./bin/wait-for-it.sh wait-for-it.sh
 
 # Run config
 ENV NODE_ENV production
-EXPOSE 3001
+EXPOSE 3003
 CMD ["npm", "start"]
