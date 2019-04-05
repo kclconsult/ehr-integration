@@ -6,13 +6,13 @@ const uuidv1 = require('uuid/v1');
 
 const models = require('../models');
 const config = require('config');
+const PRACTITIONER_ID = "da6da8b0-56e5-11e9-8d7b-95e10210fac3";
 
 module.exports = function(messageObject) {
 
-	function sendEHRData(patientID, callback, patientSubscription=false) {
+	function sendEHRData(patientID, practitionerID, callback, patientSubscription=false) {
 
 		const organizationID = uuidv1();
-		const practitionerID = uuidv1();
 		const conditionAID = uuidv1();
 		const conditionBID = uuidv1();
 		const medicationAID = uuidv1();
@@ -53,7 +53,7 @@ module.exports = function(messageObject) {
 	 */
 	router.get('/incomingEHR', function(req, res, next) {
 
-		sendEHRData(uuidv1(), function(links) {
+		sendEHRData(uuidv1(), PRACTITIONER_ID, function(links) {
 
 			res.send(links);
 
@@ -79,7 +79,7 @@ module.exports = function(messageObject) {
 
 		}).then(function(update) {
 
-			sendEHRData(patientID, function(links) {
+			sendEHRData(patientID, PRACTITIONER_ID, function(links) {
 
 				res.send(links);
 
