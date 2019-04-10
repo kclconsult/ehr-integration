@@ -45,6 +45,7 @@ module.exports = function(messageObject) {
 		});
 
 	}
+
 	/**
 	 * @api {get} /simulate/incomingEHR Simulate an incoming patient EHR (output pre-formatted as FHIR).
 	 * @apiName SimulateEHR
@@ -61,31 +62,45 @@ module.exports = function(messageObject) {
 
 	});
 
+	/**
+	 * @api {get} /simulate/incomingEHR/:nhsNumber Simulate an incoming patient EHR against a previously logged NHS number (output pre-formatted as FHIR).
+	 * @apiName SimulateEHRnhs
+	 * @apiGroup Simulate
+	 *
+	 */
 	router.get('/incomingEHR/:nhsNumber', function(req, res, next) {
 
-		const patientID = uuidv1();
+		if ( config.get('user_registration.ENABLED') ) {
 
-		models.users.update({
+			const patientID = uuidv1();
 
-			nhsNumber: null,
-			patientID: patientID
+			models.users.update({
 
-		},
-		{
+				nhsNumber: null,
+				patientID: patientID
 
-			where: {
-			 nhsNumber: req.params.nhsNumber
-			}
+			},
+			{
+				where: {
 
-		}).then(function(update) {
+				 nhsNumber: req.params.nhsNumber
+				 
+				}
+			}).then(function(update) {
 
-			sendEHRData(patientID, PRACTITIONER_ID, function(links) {
+				sendEHRData(patientID, PRACTITIONER_ID, function(links) {
 
-				res.send(links);
+					res.send(links);
 
-			}, true);
+				}, true);
 
-		})
+			});
+
+		} else {
+
+			res.send("Patient registration is not enabled.");
+
+		}
 
 	});
 

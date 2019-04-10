@@ -4,12 +4,13 @@ const router = express.Router();
 const async = require('async');
 const uuidv1 = require('uuid/v1');
 const generatePassword = require('password-generator');
-
-const models = require('../models');
+const crypto = require('crypto');
 const config = require('config');
 
+const models = require('../models');
+
 /**
- * @api {get} /register/:nhsNumber NHS number to be used to grab EHR.
+ * @api {get} /register/:nhsNumber NHS number to be used to grab EHR. Patient signup protocol step 1.
  * @apiName RegisterNumber
  * @apiGroup Register
  *
@@ -19,56 +20,81 @@ const config = require('config');
  */
 router.get('/:nhsNumber', function(req, res, next) {
 
-  const token = generatePassword();
+  if ( config.get('user_registration.ENABLED') ) {
 
-  models.users.create({
+    const token = generatePassword();
 
-    nhsNumber: req.params.nhsNumber,
-    token: token
+    models.users.create({
 
-  }).error(function(err) {
+      nhsNumber: req.params.nhsNumber,
+      token: token
 
-    console.log(err);
+    }).error(function(err) {
 
-  }).then(function() {
+      console.log(err);
 
-    res.send(token);
+    }).then(function() {
 
-  });
+      res.send(token);
+
+    });
+
+  } else {
+
+    res.send("Patient registration is not enabled.");
+
+  }
 
 });
 
+/**
+ * @api {get} /token/:token Exchange token for system patient ID, if record grabbed. Patient signup protocol step 2.
+ * @apiName GetToken
+ * @apiGroup Register
+ *
+ * @apiParam {Number} token Token supplied upon registration
+ *
+ * @apiSuccess {String} credentials An ID and temporary password combination, to later be exchanged for a full password in order to acess the UI and chat interface.
+ */
 router.get('/token/:token', function(req, res, next) {
 
-  models.users.findOne({
+  if ( config.get('user_registration.ENABLED') ) {
 
-    where: {
-      token: req.params.token
-    }
+    models.users.findOne({
 
-  }).then(function(user) {
+      where: {
+        token: req.params.token
+      }
 
-    if ( user && user.nhsNumber == null && user.patientID ) {
+    }).then(function(user) {
 
-      models.users.destroy({
+      if ( user && user.nhsNumber == null && user.patientID ) {
 
-        where: {
-          token: req.params.token
-        }
+        models.users.destroy({
 
-      }).then(function(destory) {
+          where: {
+            token: req.params.token
+          }
 
-        res.send(user.patientID);
+        }).then(function(destroy) {
 
-      });
+          res.send("curl localhost:3005/Patient/register/" + user.patientID + "/" + crypto.createHmac('sha256', config.get('credentials.SECRET')).update(user.patientID).digest('hex'));
 
-    } else {
+        });
 
-      res.sendStatus(404);
+      } else {
 
-    }
+        res.sendStatus(404);
 
-  });
+      }
+
+    });
+
+  } else {
+
+    res.send("Patient registration is not enabled.");
+
+  }
 
 });
 
