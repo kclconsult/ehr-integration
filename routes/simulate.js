@@ -40,7 +40,7 @@ module.exports = function(messageObject) {
 
 		}, function(err) {
 
-			callback("<a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\">Simulate incoming BP</a>");
+			callback("<a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming BP</a><br /><a href=\"" + config.get('garmin.URL') + "/garmin/simulate/incomingHR/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming HR</a><br /><a href=\"" + config.get('vitalpatch.URL') + "/vitalpatch/simulate/incomingECG/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming ECG</a>");
 
 		});
 
@@ -84,7 +84,7 @@ module.exports = function(messageObject) {
 				where: {
 
 				 nhsNumber: req.params.nhsNumber
-				 
+
 				}
 			}).then(function(update) {
 

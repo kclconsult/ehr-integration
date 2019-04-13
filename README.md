@@ -134,6 +134,12 @@ docker-compose up
 docker-compose up --scale proxy=0
 ```
 
+Different docker-compose files exist to accomodate different service configurations.
+
+### Custom certs
+
+To use custom certificates for communication with this service's proxy, reference them in the proxy's [Dockerfile](proxy/Dockerfile). The [gen-domain-cert](proxy/certs/gen-domain-cert.sh) script can be used to generate custom certs (e.g. 'grey.crt') using a CA root cert (e.g. 'consult.crt') and accompanying keys. If distributing an image outside of an organisation, edit [Dockerfile](proxy/Dockerfile) and [docker-compose](docker-compose.yml) to mount a volume on the host containing the certs instead, so that images are not transferred with the certs inside then.
+
 ## Built With
 
 * [Express](https://expressjs.com/) - Web framework.
