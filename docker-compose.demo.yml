@@ -14,23 +14,20 @@ services:
     build:
       context: .
     depends_on:
-      - mysql
+      - mariadb
     environment:
       - MESSAGE_PASSER_ADDRESS=danvers:3005
       - DEVICE_ADDRESS=stacy:3000
-    extra_hosts:
-      - danvers:172.21.0.1
-      - stacy:172.18.0.1
 
   migration:
     image: ehr-integration_webapp:latest
     command: ["./wait-for-it.sh", "--timeout=0", "ehr-integration_mysql_1:3306", "--", "npm", "run", "migrate"]
     links:
       - webapp
-      - mysql
+      - mariadb
 
-  mysql:
-    image: mysql:5
+  mariadb:
+    build: db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database

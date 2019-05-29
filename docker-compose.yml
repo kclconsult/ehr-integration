@@ -10,25 +10,30 @@ services:
     ports:
       - '443:443'
       - '80:80'
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
 
   webapp:
     build:
       context: .
     depends_on:
-      - mysql
+      - mariadb
     environment:
       - MESSAGE_PASSER_ADDRESS=danvers
-      - DEVICE_ADDRESS=stacy
+      # - DEVICE_ADDRESS=stacy
+      - DEVICE_ADDRESS=device.consultproject.co.uk
 
   migration:
     image: ehr-integration_webapp:latest
     command: ["./wait-for-it.sh", "--timeout=0", "ehr-integration_mysql_1:3306", "--", "npm", "run", "migrate"]
     links:
       - webapp
-      - mysql
+      - mariadb
 
-  mysql:
-    image: mysql:5
+  mariadb:
+    build: db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
@@ -37,10 +42,22 @@ services:
     volumes:
       - ehr_data_volume:/var/lib/mysql
 
-
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - proxy
+    command: certonly --webroot --webroot-path=/var/www/html --email martin.chapman@kcl.ac.uk --agree-tos --no-eff-email --force-renewal -d ehr.consultproject.co.uk
 
 volumes:
   ehr_data_volume:
+  certbot-etc:
+  certbot-var:
+  web-root:
 
 networks:
   default:
