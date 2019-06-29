@@ -26,7 +26,7 @@
             "type": "String",
             "optional": false,
             "field": "credentials",
-            "description": "<p>An ID and temporary password combination, to later be exchanged for a full password in order to acess the UI and chat interface.</p>"
+            "description": "<p>An ID and secondary token (temporary password), to later be exchanged for a full password in order to access the UI and chat interface.</p>"
           }
         ]
       }

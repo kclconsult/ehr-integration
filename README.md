@@ -55,14 +55,6 @@ git push
 
 ## Configuration
 
-Modify `config/default.js` to include the address of the [ehr-fhir-mapper service](https://github.kcl.ac.uk/consult/ehr-fhir-mapper):
-
-```
-EHR_TO_FHIR_URL: '[ehr-fhir-mapper service]'
-```
-
-If using a queue, also specify this in the config file, and supply the queue name.
-
 Create an environment file:
 
 ```

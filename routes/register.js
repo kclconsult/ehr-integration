@@ -54,7 +54,7 @@ router.get('/:nhsNumber', function(req, res, next) {
  *
  * @apiParam {Number} token Token supplied upon registration
  *
- * @apiSuccess {String} credentials An ID and temporary password combination, to later be exchanged for a full password in order to acess the UI and chat interface.
+ * @apiSuccess {String} credentials An ID and secondary token (temporary password), to later be exchanged for a full password in order to access the UI and chat interface.
  */
 router.get('/token/:token', function(req, res, next) {
 
