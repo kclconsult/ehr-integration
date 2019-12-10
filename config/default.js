@@ -7,6 +7,7 @@ module.exports = {
   },
 
   user_registration: {
+    MESSAGE_PASSER_REGISTRATION_URL: "https://danvers/Patient/register",
     ENABLED: false
   }
 

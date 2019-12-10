@@ -40,7 +40,15 @@ module.exports = function(messageObject) {
 
 		}, function(err) {
 
-			callback("<a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming BP</a><br /><a href=\"" + config.get('garmin.URL') + "/garmin/simulate/incomingHR/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming HR</a><br /><a href=\"" + config.get('vitalpatch.URL') + "/vitalpatch/simulate/incomingECG/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming ECG</a>");
+			if (!err) {
+
+				callback("Patient generated: " + patientID + "<br /><br /><a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming BP</a><br /><a href=\"" + config.get('garmin.URL') + "/garmin/simulate/incomingHR/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming HR</a><br /><a href=\"" + config.get('vitalpatch.URL') + "/vitalpatch/simulate/incomingECG/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming ECG</a>");
+
+			} else {
+
+				callback("Error generating patient: " + err);
+
+			}
 
 		});
 
@@ -63,9 +71,29 @@ module.exports = function(messageObject) {
 	});
 
 	/**
+	 * @api {get} /simulate/incomingEHR/id/:patientID Simulate an incoming patient EHR with a specified patient ID (output pre-formatted as FHIR).
+	 * @apiName SimulateEHR
+	 * @apiGroup Simulate
+	 *
+	 * @apiParam {Number} patientID ID of the patient being created.
+	 *
+	 */
+	router.get('/incomingEHR/id/:patientID', function(req, res, next) {
+
+		sendEHRData(req.params.patientID, PRACTITIONER_ID, function(links) {
+
+			res.send(links);
+
+		}, true);
+
+	});
+
+	/**
 	 * @api {get} /simulate/incomingEHR/:nhsNumber Simulate an incoming patient EHR against a previously logged NHS number (output pre-formatted as FHIR).
 	 * @apiName SimulateEHRnhs
 	 * @apiGroup Simulate
+	 *
+	 * @apiParam {Number} nhsNumber Users unique NHS number.
 	 *
 	 */
 	router.get('/incomingEHR/:nhsNumber', function(req, res, next) {

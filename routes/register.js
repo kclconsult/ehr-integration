@@ -78,7 +78,7 @@ router.get('/token/:token', function(req, res, next) {
 
         }).then(function(destroy) {
 
-          res.send("curl localhost:3005/Patient/register/" + user.patientID + "/" + crypto.createHmac('sha256', config.get('credentials.SECRET')).update(user.patientID).digest('hex'));
+          res.send("Patient ID: " + user.patientID + "<br />Secondary token: " + crypto.createHmac('sha256', config.get('credentials.SECRET')).update(user.patientID).digest('hex'));
 
         });
 
@@ -93,6 +93,48 @@ router.get('/token/:token', function(req, res, next) {
   } else {
 
     res.send("Patient registration is not enabled.");
+
+  }
+
+});
+
+/**
+ * @api {get} /:id/:token Exchange a (second) temporary token acquired along with a system ID (post record collection based upon NHS number) for a full password and thus access to the UI and chat. Patient signup protocol step 3 (forwarded).
+ * @apiName GetPassword
+ * @apiGroup Register
+ *
+ * @apiParam {String} id System ID supplied in exachange for first token supplied upon provision of NHS number.
+ * @apiParam {String} token Token supplied upon issue of system ID.
+ *
+ * @apiSuccess {String} Confirmation of ID and newly generated password.
+ */
+router.get('/:id/:token', function(req, res, next) {
+
+  if ( req.params.id && req.params.token ) {
+
+    request({
+      method: "GET",
+      url : config.get('user_registration.MESSAGE_PASSER_REGISTRATION_URL') + "/" + req.params.id + "/" + req.params.token,
+      requestCert: true
+    },
+    function (error, response, body) {
+
+      if (!error && response.statusCode <= 200) {
+
+        res.send(body);
+
+      } else {
+
+        console.log("Error when contacting message passer: " + error + " " + ( ( body && typeof body === "object" ) ? JSON.stringify(body) : body ) + " " + ( response && response.statusCode ? response.statusCode : "Status unknown." ));
+        res.sendStatus(400);
+
+      }
+
+    });
+
+  } else {
+
+    res.send("Invalid parameters.");
 
   }
 

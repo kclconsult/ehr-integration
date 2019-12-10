@@ -10,6 +10,8 @@ services:
     ports:
       - '443:443'
       - '80:80'
+    depends_on:
+      - webapp
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
@@ -24,11 +26,16 @@ services:
       - MESSAGE_PASSER_ADDRESS=danvers
       # - DEVICE_ADDRESS=stacy
       - DEVICE_ADDRESS=device.consultproject.co.uk
+      # ~MDC Not a huge fan of direct communication between grey and danvers, but enabled at present.
+      - NODE_EXTRA_CA_CERTS=/consult.crt
+    extra_hosts:
+      # ~MDC Not a huge fan of direct communication between grey and danvers, but enabled at present.
+      danvers: 10.0.1.10
 
   migration:
     image: ehr-integration_webapp:latest
-    command: ["./wait-for-it.sh", "--timeout=0", "ehr-integration_mysql_1:3306", "--", "npm", "run", "migrate"]
-    links:
+    command: ["./wait-for-it.sh", "--timeout=0", "ehr-integration_mariadb_1:3306", "--", "npm", "run", "migrate"]
+    depends_on:
       - webapp
       - mariadb
 

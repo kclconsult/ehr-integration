@@ -5,6 +5,8 @@ ENV user node
 # Copy code
 COPY package.json /home/$user/
 COPY . /home/$user/
+# ~MDC Not a huge fan of direct communication between grey and danvers, but enabled at present.
+COPY consult.crt consult.crt
 
 WORKDIR /home/$user
 
