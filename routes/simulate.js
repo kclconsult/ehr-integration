@@ -114,24 +114,24 @@ module.exports = function(messageObject) {
 				 nhsNumber: req.params.nhsNumber
 
 				}
-			}).then(function(update) {
+		    }).then(function(update) {
 
-				sendEHRData(patientID, PRACTITIONER_ID, function(links) {
+			    sendEHRData(patientID, PRACTITIONER_ID, function(links) {
 
-					res.send(links);
+				    res.send(links);
 
 				}, true);
 
 			});
 
-		} else {
+	    } else {
 
-			res.send("Patient registration is not enabled.");
+		res.send("Patient registration is not enabled.");
 
-		}
+	    }
 
 	});
 
-	return router;
+    return router;
 
 }
