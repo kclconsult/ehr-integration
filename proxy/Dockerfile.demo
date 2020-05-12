@@ -1,0 +1,14 @@
+FROM nginx
+
+RUN mkdir /etc/nginx/ssl
+
+# Can be replaced with loaded secrets in swarm: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
+COPY ./certs/grey.crt /etc/nginx/ssl/grey.crt
+COPY ./certs/grey.key /etc/nginx/ssl/grey.key
+
+COPY ./nginx.demo.conf /etc/nginx/nginx.conf
+COPY ./locations /etc/nginx/locations
+
+COPY ./bin/wait-for-it.sh wait-for-it.sh
+
+CMD ["nginx", "-g", "daemon off;"]
