@@ -23,7 +23,7 @@ module.exports = {
 
   // TODO: Add proxy entry so port does not have to be specified here.
   ehr_to_fhir: {
-    URL: "http://ehr-fhir-mapper_webapp-queue_1:3004"
+    URL: "http://ehr-fhir-converter_webapp-queue_1:3004"
   },
 
   message_passer: {
@@ -32,8 +32,8 @@ module.exports = {
 
   message_queue: {
     ACTIVE: true,
-    HOST: "ehr-fhir-mapper_rabbit_1",
-    NAME: "ehr-integration_ehr-fhir-mapper"
+    HOST: "ehr-fhir-converter_rabbit_1",
+    NAME: "ehr-integration_ehr-fhir-converter"
   }
 
 };

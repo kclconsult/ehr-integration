@@ -14,11 +14,11 @@ services:
   webapp:
     build:
       context: .
-    depends_on:
-      - mariadb
     environment:
       MESSAGE_PASSER_ADDRESS: ${MESSAGE_PASSER_ADDRESS_DEMO}
       DEVICE_ADDRESS: ${DEVICE_ADDRESS_DEMO}
+    depends_on:
+      - mariadb
 
   migration:
     image: ehr-integration_webapp:latest

@@ -96,7 +96,7 @@ router.use('/', function(req, res, next) {
 
 });
 
-app.use('/ehr', router);
+app.use('/emis', router);
 
 ///////////////////////////
 

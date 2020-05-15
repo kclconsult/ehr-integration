@@ -1,6 +1,49 @@
 [
   {
     "type": "get",
+    "url": "/:id/:token",
+    "title": "Exchange a (second) temporary token acquired along with a system ID (post record collection based upon NHS number) for a full password and thus access to the UI and chat. Patient signup protocol step 3 (forwarded).",
+    "name": "GetPassword",
+    "group": "Register",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>System ID supplied in exachange for first token supplied upon provision of NHS number.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token supplied upon issue of system ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "Confirmation",
+            "description": "<p>of ID and newly generated password.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./routes/register.js",
+    "groupTitle": "Register"
+  },
+  {
+    "type": "get",
     "url": "/token/:token",
     "title": "Exchange token for system patient ID, if record grabbed. Patient signup protocol step 2.",
     "name": "GetToken",
@@ -83,10 +126,46 @@
   },
   {
     "type": "get",
+    "url": "/simulate/incomingEHR/id/:patientID",
+    "title": "Simulate an incoming patient EHR with a specified patient ID (output pre-formatted as FHIR).",
+    "name": "SimulateEHR",
+    "group": "Simulate",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "patientID",
+            "description": "<p>ID of the patient being created.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./routes/simulate.js",
+    "groupTitle": "Simulate"
+  },
+  {
+    "type": "get",
     "url": "/simulate/incomingEHR/:nhsNumber",
     "title": "Simulate an incoming patient EHR against a previously logged NHS number (output pre-formatted as FHIR).",
     "name": "SimulateEHRnhs",
     "group": "Simulate",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "nhsNumber",
+            "description": "<p>Users unique NHS number.</p>"
+          }
+        ]
+      }
+    },
     "version": "0.0.0",
     "filename": "./routes/simulate.js",
     "groupTitle": "Simulate"

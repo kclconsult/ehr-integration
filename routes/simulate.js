@@ -42,7 +42,7 @@ module.exports = function(messageObject) {
 
 			if (!err) {
 
-				callback("Patient generated: " + patientID + "<br /><br /><a href=\"" + config.get('nokia.URL') + "/nokia/simulate/incomingBP/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming BP</a><br /><a href=\"" + config.get('garmin.URL') + "/garmin/simulate/incomingHR/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming HR</a><br /><a href=\"" + config.get('vitalpatch.URL') + "/vitalpatch/simulate/incomingECG/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming ECG</a>");
+				callback("Patient generated: " + patientID + "<br /><br /><a href=\"" + config.get('nokia.URL') + "/nokia/simulate/amberDia/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming BP</a><br /><a href=\"" + config.get('garmin.URL') + "/garmin/simulate/incomingHR/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming HR</a><br /><a href=\"" + config.get('vitalpatch.URL') + "/vitalpatch/simulate/incomingECG/" + patientID + "/" + practitionerID + "\" target=\"_blank\">Simulate incoming ECG</a>");
 
 			} else {
 
