@@ -70,6 +70,18 @@ module.exports = function(messageObject) {
 
 	});
 
+	router.post('/incomingEHR', function(req, res, next) {
+
+		const patientID = uuidv1();
+
+		sendEHRData(patientID, PRACTITIONER_ID, function(links) {
+
+			res.send(patientID);
+
+		}, true);
+
+	});
+
 	/**
 	 * @api {get} /simulate/incomingEHR/id/:patientID Simulate an incoming patient EHR with a specified patient ID (output pre-formatted as FHIR).
 	 * @apiName SimulateEHR
