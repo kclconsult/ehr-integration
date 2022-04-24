@@ -10,6 +10,7 @@ services:
     tty: true
     ports:
       - '3003:443'
+    restart: unless-stopped
 
   webapp:
     build:
@@ -19,6 +20,7 @@ services:
       DEVICE_ADDRESS: ${DEVICE_ADDRESS_DEMO}
     depends_on:
       - mariadb
+    restart: unless-stopped
 
   migration:
     image: ehr-integration_webapp:latest
@@ -36,6 +38,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ehr_data_volume:/var/lib/mysql
+    restart: unless-stopped
 
 volumes:
   ehr_data_volume:
