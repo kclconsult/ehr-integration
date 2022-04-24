@@ -55,7 +55,7 @@ services:
       - web-root:/var/www/html
     depends_on:
       - proxy
-    command: certonly --webroot --webroot-path=/var/www/html --email martin.chapman@kcl.ac.uk --agree-tos --no-eff-email --force-renewal -d ehr.consultproject.co.uk
+    command: certonly --webroot --webroot-path=/var/www/html --email martin.chapman@kcl.ac.uk --agree-tos --no-eff-email --force-renewal -d ehr.consultsystem.co.uk
 
 volumes:
   ehr_data_volume:
